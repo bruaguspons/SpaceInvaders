@@ -35,17 +35,17 @@ let game = {
 let numScore = 0;
 
 if (innerWidth < 500) {
-  document.querySelector('#app').innerHTML = `
-  <div id='mobil'>
-    <div id="controllers">
-      <div>
-        <button><img src=${LeftArrow}></img></button>
-        <button><img src=${Leftright}></img></button>
-      </div>
-      <button><img src=${Aim}></img></button>
-    </div>
-  </div>
-  `
+  // document.querySelector('#app').innerHTML = `
+  // <div id='mobil'>
+  //   <div id="controllers">
+  //     <div>
+  //       <button><img src=${LeftArrow}></img></button>
+  //       <button><img src=${Leftright}></img></button>
+  //     </div>
+  //     <button><img src=${Aim}></img></button>
+  //   </div>
+  // </div>
+  // `
 
 }
 for (let i = 0; i < 100; i++) {
@@ -132,13 +132,13 @@ function loop() {
 
       setTimeout(() => {
         game.active = false
-        document.querySelector('#app').innerHTML += `
-          <div id="GO">
-            <h2>Game Over</h2>
-            <p>your Score is: ${score.innerHTML} </p>
-            <button id="btn-GO">Play Again</button>
-          </div>
-        `
+        // document.querySelector('#app').innerHTML += `
+        //   <div id="GO">
+        //     <h2>Game Over</h2>
+        //     <p>your Score is: ${score.innerHTML} </p>
+        //     <button id="btn-GO">Play Again</button>
+        //   </div>
+        // `
         document.querySelector('#btn-GO').addEventListener("click", () => {
           console.log("hola")
           game.active = true
