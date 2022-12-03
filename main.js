@@ -47,32 +47,6 @@ if (innerWidth < 500) {
   </div>
   `
 
-  const arrows = document.querySelectorAll('#mobil button')
-  arrows[0].addEventListener('touchstart', () => {
-    keys.ArrowLeft = true;
-  })
-  arrows[0].addEventListener('touchend', () => {
-    keys.ArrowLeft = false;
-  })
-  arrows[1].addEventListener('touchstart', () => {
-    keys.ArrowRight = true;
-  })
-  arrows[1].addEventListener('touchend', () => {
-    keys.ArrowRight = false;
-  })
-  arrows[2].addEventListener('touchstart', () => {
-    projectiles.push(new Projectile({
-      position: {
-        x: player.position.x + (player.width / 2),
-        y: player.position.y
-      },
-      velocity: {
-        x: 0,
-        y: -10
-      }
-    }));
-  })
-
 }
 for (let i = 0; i < 100; i++) {
   stars.push(new Particle({
@@ -297,6 +271,32 @@ addEventListener("keyup", ({ key }) => {
       keys.ArrowRight = false;
       break;
   }
+})
+
+const arrows = document.querySelectorAll('#mobil button')
+arrows[0].addEventListener('touchstart', () => {
+  keys.ArrowLeft = true;
+})
+arrows[0].addEventListener('touchend', () => {
+  keys.ArrowLeft = false;
+})
+arrows[1].addEventListener('touchstart', () => {
+  keys.ArrowRight = true;
+})
+arrows[1].addEventListener('touchend', () => {
+  keys.ArrowRight = false;
+})
+arrows[2].addEventListener('touchstart', () => {
+  projectiles.push(new Projectile({
+    position: {
+      x: player.position.x + (player.width / 2),
+      y: player.position.y
+    },
+    velocity: {
+      x: 0,
+      y: -10
+    }
+  }));
 })
 
 
