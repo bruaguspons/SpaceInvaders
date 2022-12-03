@@ -12,7 +12,7 @@ const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
 canvas.width = innerWidth;
-canvas.height = innerHeight - 2 * 40;
+canvas.height = innerHeight;
 
 const startGame = () => {
   const keys = {

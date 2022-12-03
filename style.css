@@ -12,7 +12,7 @@
 }
 
 #container {
-  padding: 40px 0;
+  padding: 0;
 }
 
 #app {
@@ -27,11 +27,11 @@
   display: flex;
   justify-content: space-between;
   /* width: min-content; */
-  bottom: 80px;
+  bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
-  padding: 0 30px;
+  padding: 50px 30px;
 
 }
 
