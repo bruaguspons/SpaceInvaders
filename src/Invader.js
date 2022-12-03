@@ -2,6 +2,12 @@ import InvaderImg from './img/invader.png'
 import InvaderProjectile from './InvaderProjectile';
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
+
+let scale = 1;
+if (innerWidth < 500) {
+    scale = 0.8
+}
+
 export default class Invader {
     constructor({ position }) {
 
@@ -13,7 +19,6 @@ export default class Invader {
         const image = new Image();
         image.src = InvaderImg;
         image.onload = () => {
-            const scale = 1;
             this.width = image.width * scale;
             this.height = image.height * scale;
             this.image = image;

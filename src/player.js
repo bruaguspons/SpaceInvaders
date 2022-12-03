@@ -3,6 +3,10 @@ import Ship1 from './img/ship3.png'
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
+let scale = 0.30;
+if (innerWidth < 500) {
+    scale = 0.20
+}
 export default class Player {
     constructor() {
 
@@ -14,7 +18,6 @@ export default class Player {
         const image = new Image();
         image.src = Ship1;
         image.onload = () => {
-            const scale = 0.30;
             this.width = image.width * scale;
             this.height = image.height * scale;
             this.image = image;
@@ -49,4 +52,13 @@ export default class Player {
         }
     }
 
+    reset() {
+        this.width = this.image.width * scale;
+        this.height = this.image.height * scale;
+        this.position = {
+            x: (canvas.width / 2) - (this.width / 2),
+            y: canvas.height - this.height - 20
+        };
+        this.opacity = 1;
+    }
 }

@@ -4,13 +4,16 @@ import Grid from './src/GridInvader';
 import Particle from './src/Particle';
 import Projectile from './src/Projectile';
 
+import Aim from './src/img/aim.svg'
+import LeftArrow from './src/img/left-arrow.svg'
+import Leftright from './src/img/right-arrow.svg'
+
 const score = document.querySelector("#score");
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
-
 
 const keys = {
   ArrowLeft: false,
@@ -19,8 +22,8 @@ const keys = {
 
 const player = new Player();
 const projectiles = [];
-const grids = [];
-const invaderProjectiles = [];
+let grids = [];
+let invaderProjectiles = [];
 const particles = [];
 const stars = []
 let frames = 0;
@@ -31,6 +34,46 @@ let game = {
 }
 let numScore = 0;
 
+if (innerWidth < 500) {
+  document.querySelector('#app').innerHTML = `
+  <div id='mobil'>
+    <div id="controllers">
+      <div>
+        <button><img src=${LeftArrow}></img></button>
+        <button><img src=${Leftright}></img></button>
+      </div>
+      <button><img src=${Aim}></img></button>
+    </div>
+  </div>
+  `
+
+  const arrows = document.querySelectorAll('#mobil button')
+  arrows[0].addEventListener('touchstart', () => {
+    keys.ArrowLeft = true;
+  })
+  arrows[0].addEventListener('touchend', () => {
+    keys.ArrowLeft = false;
+  })
+  arrows[1].addEventListener('touchstart', () => {
+    keys.ArrowRight = true;
+  })
+  arrows[1].addEventListener('touchend', () => {
+    keys.ArrowRight = false;
+  })
+  arrows[2].addEventListener('touchstart', () => {
+    projectiles.push(new Projectile({
+      position: {
+        x: player.position.x + (player.width / 2),
+        y: player.position.y
+      },
+      velocity: {
+        x: 0,
+        y: -10
+      }
+    }));
+  })
+
+}
 for (let i = 0; i < 100; i++) {
   stars.push(new Particle({
     position: {
@@ -104,19 +147,37 @@ function loop() {
       invaderProjectile.position.x + (2 * invaderProjectile.width) >= player.position.x &&
       invaderProjectile.position.x <= player.position.x + player.width
     ) {
-      setTimeout(() => {
-        invaderProjectiles.splice(index, 1)
-        player.opacity = 0;
-        game.over = true;
-      }, 0);
-
-      setTimeout(() => {
-        game.active = false
-      }, 2000)
+      invaderProjectiles.splice(index, 1)
+      player.opacity = 0;
       createParticles({
         object: player
       })
-      console.log("you die")
+      player.height = 0
+      player.width = 0
+      game.over = true;
+
+      setTimeout(() => {
+        game.active = false
+        document.querySelector('#app').innerHTML += `
+          <div id="GO">
+            <h2>Game Over</h2>
+            <p>your Score is: ${score.innerHTML} </p>
+            <button id="btn-GO">Play Again</button>
+          </div>
+        `
+        document.querySelector('#btn-GO').addEventListener("click", () => {
+          console.log("hola")
+          game.active = true
+          game.over = false
+          score.innerHTML = 0
+          invaderProjectiles = []
+          grids = []
+          grids.push(new Grid());
+          player.reset()
+          document.querySelector('#GO').remove()
+          loop()
+        })
+      }, 2000)
     }
 
   })
@@ -239,22 +300,6 @@ addEventListener("keyup", ({ key }) => {
 })
 
 
-// document.querySelector('#app').innerHTML = `
-//   <div>
-//     <a href="https://vitejs.dev" target="_blank">
-//       <img src="/vite.svg" class="logo" alt="Vite logo" />
-//     </a>
-//     <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-//       <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-//     </a>
-//     <h1>Hello Vite!</h1>
-//     <div class="card">
-//       <button id="counter" type="button"></button>
-//     </div>
-//     <p class="read-the-docs">
-//       Click on the Vite logo to learn more
-//     </p>
-//   </div>
-// `
 
-// setupCounter(document.querySelector('#counter'))
+
+

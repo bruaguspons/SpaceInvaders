@@ -15,7 +15,10 @@ export default class Grid {
         this.invaders = []
 
         const rows = Math.ceil(Math.random() * 4 + 2);
-        const columns = Math.ceil(Math.random() * 7 + 3);
+        let columns = Math.ceil(Math.random() * 7 + 3);
+        if (innerWidth < 500) {
+            columns = Math.ceil(Math.random() + 3);
+        }
 
         this.width = 50 * columns;
         this.height = 40 * rows;
