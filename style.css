@@ -3,7 +3,7 @@
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
-
+  background: #1a1a1a;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -18,7 +18,8 @@
   background: transparent;
 }
 
-#mobil #controllers {
+#mobil {
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   /* width: min-content; */
@@ -43,15 +44,15 @@
   margin: 5px;
 }
 
-#mobil button:nth-child(1) {
+#mobil div button:nth-child(1) {
   border-radius: 50% 0 0 50%;
 }
 
-#mobil button:nth-child(2) {
+#mobil div button:nth-child(2) {
   border-radius: 0 50% 50% 0;
 }
 
-#mobil>#controllers>button {
+#mobil>button {
   border-radius: 50%;
 }
 

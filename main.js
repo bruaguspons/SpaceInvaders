@@ -33,48 +33,49 @@ let game = {
   active: true
 }
 let numScore = 0;
-
 if (innerWidth < 500) {
   document.querySelector('#app').innerHTML += `
-  <div id='mobil'>
-    <div id="controllers">
-      <div>
-        <button><img src=${LeftArrow}></img></button>
-        <button><img src=${Leftright}></img></button>
-      </div>
-      <button><img src=${Aim}></img></button>
+    <div id='mobil'>
+        <div>
+          <button><img src=${LeftArrow}></img></button>
+          <button><img src=${Leftright}></img></button>
+        </div>
+        <button><img src=${Aim}></img></button>
     </div>
-  </div>
-  `
-
-  const arrows = document.querySelectorAll('#mobil button')
-  arrows[0].addEventListener('touchstart', () => {
-    keys.ArrowLeft = true;
-  })
-  arrows[0].addEventListener('touchend', () => {
-    keys.ArrowLeft = false;
-  })
-  arrows[1].addEventListener('touchstart', () => {
-    keys.ArrowRight = true;
-  })
-  arrows[1].addEventListener('touchend', () => {
-    keys.ArrowRight = false;
-  })
-  arrows[2].addEventListener('touchstart', () => {
-    projectiles.push(new Projectile({
-      position: {
-        x: player.position.x + (player.width / 2),
-        y: player.position.y
-      },
-      velocity: {
-        x: 0,
-        y: -10
-      }
-    }));
-  })
-
-
+    `
 }
+
+const responstive = () => {
+  if (innerWidth < 500) {
+    const arrows = document.querySelectorAll('#mobil button')
+    arrows[0].addEventListener('touchstart', () => {
+      console.log('gola')
+      keys.ArrowLeft = true;
+    })
+    arrows[0].addEventListener('touchend', () => {
+      keys.ArrowLeft = false;
+    })
+    arrows[1].addEventListener('touchstart', () => {
+      keys.ArrowRight = true;
+    })
+    arrows[1].addEventListener('touchend', () => {
+      keys.ArrowRight = false;
+    })
+    arrows[2].addEventListener('touchstart', () => {
+      projectiles.push(new Projectile({
+        position: {
+          x: player.position.x + (player.width / 2),
+          y: player.position.y
+        },
+        velocity: {
+          x: 0,
+          y: -10
+        }
+      }));
+    })
+  }
+}
+
 for (let i = 0; i < 100; i++) {
   stars.push(new Particle({
     position: {
@@ -108,7 +109,7 @@ function createParticles({ object }) {
     }))
   }
 }
-
+responstive()
 function loop() {
   if (!game.active) return
   requestAnimationFrame(loop);
@@ -177,6 +178,7 @@ function loop() {
           player.reset()
           document.querySelector('#GO').remove()
           loop()
+          responstive()
         })
       }, 2000)
     }
@@ -299,6 +301,7 @@ addEventListener("keyup", ({ key }) => {
       break;
   }
 })
+
 
 
 
