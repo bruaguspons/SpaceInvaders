@@ -173,6 +173,8 @@ export const startGame = (shipNum) => {
                     `
                     document.getElementById('ship').addEventListener('click', () => {
                         document.querySelector('#GO').remove()
+                        document.querySelector('#scoreBox').remove()
+                        if (innerWidth < 500) document.querySelector('#mobil').remove()
                         c.clearRect(0, 0, canvas.width, canvas.height)
                         chooseShip()
                     })
