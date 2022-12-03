@@ -63,16 +63,6 @@
   font-family: sans-serif;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
 body {
   padding: 0;
   margin: 0;
@@ -96,25 +86,6 @@ body {
   right: 0;
   margin: auto;
 }
-
-/* h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-} */
-
-/* .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
-} */
 
 #GO button {
   border-radius: 8px;
