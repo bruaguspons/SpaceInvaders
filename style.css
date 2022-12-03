@@ -96,6 +96,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: .5rem;
+  text-align: center;
 }
 
 #GO h2 {
@@ -124,8 +126,120 @@ body {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+#selector {
+  background: transparent;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#btn-sele {
+  display: flex;
+  gap: 1rem;
+}
+
+#btn-sele>button {
+  width: 4rem;
+  height: 4rem;
+  font-size: 1rem;
+}
+
+#btn-sele>button>img {
+  width: 100%;
+}
+
+.card {
+  position: relative;
+  width: 40%;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* flex: 0 0 auto; */
+}
+
+.card>img {
+  position: absolute;
+  width: min-content;
+}
+
+.shipInLeft {
+  animation: toleft .5s ease-in-out forwards;
+}
+
+.shipOutLeft {
+  animation: toleftOut .5s ease-in-out forwards;
+}
+
+.shipInRight {
+  animation: toRight .5s ease-in-out forwards;
+}
+
+.shipOutRight {
+  animation: toRightOut .5s ease-in-out forwards;
+}
+
+
 @media only screen and (max-width: 500px) {
   #scoreBox {
     margin: 80px 15px;
+  }
+
+  /* .card {
+    width: 30%;
+  } */
+}
+
+@keyframes toleft {
+  from {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toleftOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-200px);
+
+  }
+}
+
+@keyframes toRight {
+  from {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes toRightOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(200px);
   }
 }

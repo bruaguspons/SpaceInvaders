@@ -1,4 +1,8 @@
-import Ship1 from './img/ship3.png'
+import ship1 from './img/ship1.png'
+import ship2 from './img/ship2.png'
+import ship3 from './img/ship3.png'
+
+const ships = [ship1, ship2, ship3]
 
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
@@ -8,7 +12,7 @@ if (innerWidth < 500) {
     scale = 0.20
 }
 export default class Player {
-    constructor() {
+    constructor(shipNum) {
 
         this.velocity = 0;
         this.rotation = 0;
@@ -16,7 +20,7 @@ export default class Player {
         this.opacity = 1;
 
         const image = new Image();
-        image.src = Ship1;
+        image.src = ships[shipNum];
         image.onload = () => {
             this.width = image.width * scale;
             this.height = image.height * scale;
