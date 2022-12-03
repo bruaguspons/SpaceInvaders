@@ -12,7 +12,9 @@
 }
 
 #container {
-  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #app {
@@ -31,7 +33,7 @@
   left: 0;
   right: 0;
   margin: auto;
-  padding: 50px 30px;
+  padding: 140px 30px;
 
 }
 
@@ -120,4 +122,10 @@ body {
 #GO button:focus,
 #GO button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media only screen and (max-width: 500px) {
+  #scoreBox {
+    margin: 80px 15px;
+  }
 }

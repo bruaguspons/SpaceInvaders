@@ -12,7 +12,8 @@ const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
 canvas.width = innerWidth;
-canvas.height = innerHeight;
+canvas.height = innerHeight
+if (innerWidth < 500) canvas.height = innerHeight - 2 * 80;
 
 const startGame = () => {
   const keys = {
