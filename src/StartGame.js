@@ -1,7 +1,7 @@
-import Player from './player'
-import Grid from './GridInvader';
-import Particle from './Particle';
-import Projectile from './Projectile';
+import Player from './Classes/player'
+import Grid from './Classes/GridInvader';
+import Particle from './Classes/Particle';
+import Projectile from './Classes/Projectile';
 
 import { chooseShip } from '../main';
 import Aim from './img/aim.svg'
@@ -66,10 +66,12 @@ export const startGame = (shipNum) => {
                 keys.ArrowRight = false;
             })
             arrows[2].addEventListener('touchstart', () => {
+                const [x, y] = player.getPosition()
+                const [w, h] = player.getDimentions()
                 projectiles.push(new Projectile({
                     position: {
-                        x: player.position.x + (player.width / 2),
-                        y: player.position.y
+                        x: x + (w / 2),
+                        y: y
                     },
                     velocity: {
                         x: 0,
@@ -127,7 +129,7 @@ export const startGame = (shipNum) => {
             star.update()
         })
 
-        player.update();
+        player.update({});
         particles.forEach((particle, index) => {
             if (particle.opacity <= 0.01) {
                 setTimeout(() => {
@@ -138,6 +140,10 @@ export const startGame = (shipNum) => {
         });
 
         invaderProjectiles.forEach((invaderProjectile, index) => {
+            const [xPlayer, yPlayer] = player.getPosition()
+            const [wPlayer, hPlayer] = player.getDimentions()
+
+
             if (invaderProjectile.position.y >= canvas.height) {
                 setTimeout(() => {
                     invaderProjectiles.splice(index, 1)
@@ -147,18 +153,21 @@ export const startGame = (shipNum) => {
 
             }
             if (
-                invaderProjectile.position.y + invaderProjectile.height >= player.position.y &&
-                invaderProjectile.position.y <= player.position.y + player.height &&
-                invaderProjectile.position.x + (2 * invaderProjectile.width) >= player.position.x &&
-                invaderProjectile.position.x <= player.position.x + player.width
+                invaderProjectile.position.y + invaderProjectile.height >= yPlayer &&
+                invaderProjectile.position.y <= yPlayer + hPlayer &&
+                invaderProjectile.position.x + (2 * invaderProjectile.width) >= xPlayer &&
+                invaderProjectile.position.x <= xPlayer + wPlayer
             ) {
                 invaderProjectiles.splice(index, 1)
-                player.opacity = 0;
                 createParticles({
                     object: player
                 })
-                player.height = 0
-                player.width = 0
+                player.update({
+                    opacity: 0, dimentions: {
+                        w: 0,
+                        h: 0
+                    }
+                });
                 game.over = true;
 
                 setTimeout(() => {
@@ -179,6 +188,7 @@ export const startGame = (shipNum) => {
                         chooseShip()
                     })
                     document.querySelector('#playAgain').addEventListener("click", () => {
+                        c.clearRect(0, 0, canvas.width, canvas.height)
                         startGame(shipNum)
                         // console.log("hola")
                         // game.active = true
@@ -242,16 +252,20 @@ export const startGame = (shipNum) => {
                 frames = randomNumber - 1
             }
         })
+        // const [xPlayer, yPlayer] = player.getPosition()
+        const [wPlayer, hPlayer] = player.getDimentions()
+        // const opacity = player.getOpacity()
+
 
         if (keys.ArrowLeft && player.position.x >= 0) {
-            player.velocity = -7;
-            player.rotation = -0.20;
-        } else if (keys.ArrowRight && player.position.x <= canvas.width - player.width) {
-            player.velocity = 7;
-            player.rotation = 0.20;
+            player.update({ velocity: { x: -7 } })
+            player.updateRotation(-0.20);
+        } else if (keys.ArrowRight && player.position.x <= canvas.width - wPlayer) {
+            player.update({ velocity: { x: 7 } })
+            player.updateRotation(0.20);
         } else {
-            player.velocity = 0;
-            player.rotation = 0;
+            player.update({ velocity: { x: 0 } })
+            player.updateRotation(0);
         };
 
         // spawning enemies
@@ -268,6 +282,8 @@ export const startGame = (shipNum) => {
     loop();
 
     addEventListener("keydown", ({ key }) => {
+        const [x, y] = player.getPosition()
+        const [w, h] = player.getDimentions()
         if (game.over) return
         switch (key) {
             case "a":
@@ -282,18 +298,14 @@ export const startGame = (shipNum) => {
             case " ": {
                 projectiles.push(new Projectile({
                     position: {
-                        x: player.position.x + (player.width / 2),
-                        y: player.position.y
+                        x: x + (w / 2),
+                        y: y
                     },
                     velocity: {
                         x: 0,
                         y: -10
                     }
                 }));
-                break
-            }
-            case "f": {
-                console.log(player.height, player.width, player.position.x)
                 break
             }
         }

@@ -11,6 +11,7 @@ export const chooseShip = () => {
 
   document.querySelector('#app').innerHTML += `
       <div id='selector'>
+        <h2>Select your ship:</h2>
         <div class='card'><img src=${ship1}></img></div>
         <div id='btn-sele'>
           <button><img src=${LeftArrow}></img></button>
@@ -25,21 +26,21 @@ export const chooseShip = () => {
   const btns = document.querySelectorAll('#btn-sele>button')
 
   btns[0].addEventListener('click', () => {
-    ship.innerHTML = `<img class='shipOutLeft' src=${ships[current]}></img>`
+    ship.innerHTML = `<img class='shipOutRight' src=${ships[current]}></img>`
     if (current == 0) current = 3
     current--
-    ship.innerHTML += `<img class='shipInLeft' src=${ships[current]}></img>`
+    ship.innerHTML += `<img class='shipInRight' src=${ships[current]}></img>`
     setTimeout(() => {
-      document.querySelector('.shipOutLeft').remove()
+      document.querySelector('.shipOutRight').remove()
     }, 500)
   })
 
   btns[2].addEventListener('click', () => {
-    ship.innerHTML = `<img class='shipOutRight' src=${ships[current]}></img>`
+    ship.innerHTML = `<img class='shipOutLeft' src=${ships[current]}></img>`
     current = (current + 1) % 3
-    ship.innerHTML += `<img class='shipInRight' src=${ships[current]}></img>`
+    ship.innerHTML += `<img class='shipInLeft' src=${ships[current]}></img>`
     setTimeout(() => {
-      document.querySelector('.shipOutRight').remove()
+      document.querySelector('.shipOutLeft').remove()
     }, 500)
   })
 

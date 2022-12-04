@@ -2,16 +2,20 @@ import Invader from './Invader'
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 
-let columns = Math.ceil(Math.random() * 7 + 3);
-if (innerWidth < 500) {
-    columns = Math.ceil(Math.random() + 3);
-}
-let rows = Math.ceil(Math.random() * 4 + 2);
-if (innerWidth < 500) {
-    rows = Math.ceil(Math.random() * 2 + 1);
-}
 export default class Grid {
+
     constructor() {
+        let columns = Math.ceil(Math.random() * 7 + 3);
+        if (innerWidth < 500) {
+            columns = Math.ceil(Math.random() + 3);
+        }
+        let rows = Math.ceil(Math.random() * 4 + 2);
+        if (innerWidth < 500) {
+            rows = Math.ceil(Math.random() * 2 + 1);
+        }
+
+        const colors = ['red', 'blue', 'green']
+        const numRand = Math.floor(Math.random() * 3) % 3
         this.position = {
             x: 0,
             y: 0
@@ -32,7 +36,7 @@ export default class Grid {
                     position: {
                         x: 50 * i,
                         y: 40 * j
-                    }
+                    }, color: colors[numRand]
                 }))
             }
         };

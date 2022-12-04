@@ -137,6 +137,11 @@ body {
   justify-content: center;
 }
 
+#selector>h2 {
+  color: #fff;
+  font-size: 2rem;
+}
+
 #btn-sele {
   display: flex;
   gap: 1rem;
