@@ -7,26 +7,29 @@ import { chooseShip } from '../main';
 import Aim from './img/aim.svg'
 import LeftArrow from './img/left-arrow.svg'
 import RightArrow from './img/right-arrow.svg'
+import InvaderProjectile from './Classes/InvaderProjectile';
+import Ship from './Classes/Ship';
+import Invader from './Classes/Invader';
 
 const canvas = document.querySelector("canvas");
-const c = canvas.getContext("2d");
+const c = canvas!.getContext("2d");
 
-canvas.width = innerWidth;
-canvas.height = innerHeight
-if (innerWidth < 500) canvas.height = innerHeight - 2 * 80;
+canvas!.width = innerWidth;
+canvas!.height = innerHeight
+if (innerWidth < 500) canvas!.height = innerHeight - 2 * 80;
 
-export const startGame = (shipNum) => {
+export const startGame = (shipNum: number) => {
     const keys = {
         ArrowLeft: false,
         ArrowRight: false
     }
 
     const player = new Player(shipNum);
-    const projectiles = [];
-    let grids = [];
-    let invaderProjectiles = [];
-    const particles = [];
-    const stars = []
+    const projectiles: Projectile[] = [];
+    let grids: Grid[] = [];
+    let invaderProjectiles: InvaderProjectile[] = [];
+    const particles: Particle[] = [];
+    const stars: Particle[] = []
     let frames = 0;
     let randomNumber = Math.ceil(Math.random() * 500 + 400);
 
@@ -35,13 +38,13 @@ export const startGame = (shipNum) => {
         active: true
     }
     let numScore = 0;
-    document.querySelector('#app').innerHTML = `
+    document.querySelector('#app')!.innerHTML = `
     <div id="scoreBox">Score: <span id="score">${numScore}</span></div>
-  
   `
-    console.log(score.innerHTML)
+    const score = document.querySelector('#score')
+    // console.log(score.innerHTML)
     if (innerWidth < 500) {
-        document.querySelector('#app').innerHTML += `
+        document.querySelector('#app')!.innerHTML += `
     <div id='mobil'>
         <div>
           <button><img src=${LeftArrow}></img></button>
@@ -67,7 +70,7 @@ export const startGame = (shipNum) => {
             })
             arrows[2].addEventListener('touchstart', () => {
                 const [x, y] = player.getPosition()
-                const [w, h] = player.getDimentions()
+                const [w, ,] = player.getDimentions()
                 projectiles.push(new Projectile({
                     position: {
                         x: x + (w / 2),
@@ -85,8 +88,8 @@ export const startGame = (shipNum) => {
     for (let i = 0; i < 100; i++) {
         stars.push(new Particle({
             position: {
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height
+                x: Math.random() * canvas!.width,
+                y: Math.random() * canvas!.height
             },
             velocity: {
                 x: 0,
@@ -98,19 +101,21 @@ export const startGame = (shipNum) => {
         }))
     }
 
-    function createParticles({ object }) {
+    function createParticles(object: Ship | Invader) {
+        const [x, y] = object.getPosition()
+        const [w, h] = object.getDimentions()
         for (let i = 0; i < 10; i++) {
             particles.push(new Particle({
                 position: {
-                    x: object.position.x + object.width / 2,
-                    y: object.position.y + object.height / 2
+                    x: x + w / 2,
+                    y: y + h / 2
                 },
                 velocity: {
                     x: (Math.random() - 0.5) * 2,
                     y: (Math.random() - 0.5) * 2
                 },
                 radio: Math.random() * 3 + 3,
-                color: object.color
+                color: object.getColor()
 
             }))
         }
@@ -118,20 +123,22 @@ export const startGame = (shipNum) => {
     function loop() {
         if (!game.active) return
         requestAnimationFrame(loop);
-        c.fillStyle = "black";
-        c.fillRect(0, 0, canvas.width, canvas.height)
+        c!.fillStyle = "black";
+        c!.fillRect(0, 0, canvas!.width, canvas!.height)
 
         stars.forEach((star) => {
-            if (star.position.y - star.radio >= canvas.height) {
-                star.position.x = Math.random() * canvas.width;
-                star.position.y = 0
+            const [, y] = star.getPosition()
+            const r = star.getRadio()
+            if (y - r >= canvas!.height) {
+                star.updatePosition({ x: Math.random() * canvas!.width })
+                star.updatePosition({ y: 0 })
             }
             star.update()
         })
 
-        player.update({});
+        player.UpdatePlayer({});
         particles.forEach((particle, index) => {
-            if (particle.opacity <= 0.01) {
+            if (particle.getOpacity() <= 0.01) {
                 setTimeout(() => {
                     particles.splice(index, 1)
                 }, 0)
@@ -142,9 +149,10 @@ export const startGame = (shipNum) => {
         invaderProjectiles.forEach((invaderProjectile, index) => {
             const [xPlayer, yPlayer] = player.getPosition()
             const [wPlayer, hPlayer] = player.getDimentions()
+            const [xProjectile, yProjectile] = invaderProjectile.getPosition()
+            const [wProjectile, hProjectile] = invaderProjectile.getDimentions()
 
-
-            if (invaderProjectile.position.y >= canvas.height) {
+            if (yProjectile >= canvas!.height) {
                 setTimeout(() => {
                     invaderProjectiles.splice(index, 1)
                 }, 0)
@@ -153,16 +161,14 @@ export const startGame = (shipNum) => {
 
             }
             if (
-                invaderProjectile.position.y + invaderProjectile.height >= yPlayer &&
-                invaderProjectile.position.y <= yPlayer + hPlayer &&
-                invaderProjectile.position.x + (2 * invaderProjectile.width) >= xPlayer &&
-                invaderProjectile.position.x <= xPlayer + wPlayer
+                yProjectile + hProjectile >= yPlayer &&
+                yProjectile <= yPlayer + hPlayer &&
+                xProjectile + (2 * wProjectile) >= xPlayer &&
+                xProjectile <= xPlayer + wPlayer
             ) {
                 invaderProjectiles.splice(index, 1)
-                createParticles({
-                    object: player
-                })
-                player.update({
+                createParticles(player)
+                player.UpdatePlayer({
                     opacity: 0, dimentions: {
                         w: 0,
                         h: 0
@@ -172,7 +178,7 @@ export const startGame = (shipNum) => {
 
                 setTimeout(() => {
                     game.active = false
-                    document.querySelector('#app').innerHTML += `
+                    document.querySelector('#app')!.innerHTML += `
                         <div id="GO">
                             <h2>Game Over</h2>
                             <p>Your Score is: ${numScore} </p>
@@ -180,15 +186,15 @@ export const startGame = (shipNum) => {
                             <button id='ship'>Choose Ship</button>
                         </div>
                     `
-                    document.getElementById('ship').addEventListener('click', () => {
-                        document.querySelector('#GO').remove()
-                        document.querySelector('#scoreBox').remove()
-                        if (innerWidth < 500) document.querySelector('#mobil').remove()
-                        c.clearRect(0, 0, canvas.width, canvas.height)
+                    document.getElementById('ship')!.addEventListener('click', () => {
+                        document.querySelector('#GO')!.remove()
+                        document.querySelector('#scoreBox')!.remove()
+                        if (innerWidth < 500) document.querySelector('#mobil')!.remove()
+                        c!.clearRect(0, 0, canvas!.width, canvas!.height)
                         chooseShip()
                     })
-                    document.querySelector('#playAgain').addEventListener("click", () => {
-                        c.clearRect(0, 0, canvas.width, canvas.height)
+                    document.querySelector('#playAgain')!.addEventListener("click", () => {
+                        c!.clearRect(0, 0, canvas!.width, canvas!.height)
                         startGame(shipNum)
                         // console.log("hola")
                         // game.active = true
@@ -207,8 +213,8 @@ export const startGame = (shipNum) => {
         })
 
         projectiles.forEach((projectile, index) => {
-
-            if (projectile.position.y + projectile.radio <= 0) {
+            const [, y] = projectile.getPosition()
+            if (y + projectile.getRadio() <= 0) {
                 setTimeout(() => {
                     projectiles.splice(index, 1)
                 }, 0)
@@ -219,33 +225,34 @@ export const startGame = (shipNum) => {
 
         grids.forEach((grid, gridIndex) => {
             grid.update()
-
-            if (frames % 50 == 0 && grid.invaders.length > 0) {
-                grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
-
+            const InvadersLength = grid.getLength()
+            if (frames % 50 == 0 && InvadersLength > 0) {
+                grid.getInvader(Math.floor(Math.random() * InvadersLength)).shoot(invaderProjectiles)
             }
 
-            grid.invaders.forEach((invader, index) => {
-                invader.update({ velocity: grid.velocity })
+            grid.getAllInvaders().forEach((invader, index) => {
+                invader.update({ velocity: grid.getVelocity() })
+                const [xInvader, yInvader] = invader.getPosition()
+                const [wInvader, hInvader] = invader.getDimentions()
                 projectiles.forEach((projectile, i) => {
+                    const [x, y] = projectile.getPosition()
+                    const r = projectile.getRadio()
                     if (
-                        projectile.position.y >= invader.position.y &&
-                        projectile.position.y + 2 * projectile.radio <= invader.position.y + invader.height &&
-                        projectile.position.x >= invader.position.x &&
-                        projectile.position.x + 2 * projectile.radio <= invader.position.x + invader.width
+                        y >= yInvader &&
+                        y + 2 * r <= yInvader + hInvader &&
+                        x >= xInvader &&
+                        x + 2 * r <= xInvader + wInvader
 
                     ) {
-                        createParticles({
-                            object: invader
-                        });
-                        grid.invaders.splice(index, 1)
+                        createParticles(invader);
+                        grid.deleteInvader(index)
                         projectiles.splice(i, 1)
                         numScore += 100;
-                        score.innerHTML = numScore
+                        score!.innerHTML = String(numScore)
                     }
                 })
             })
-            if (grid.invaders.length == 0) {
+            if (grid.getLength() == 0) {
                 grids.splice(gridIndex, 1);
             }
             if (grids.length === 0) {
@@ -253,18 +260,19 @@ export const startGame = (shipNum) => {
             }
         })
         // const [xPlayer, yPlayer] = player.getPosition()
-        const [wPlayer, hPlayer] = player.getDimentions()
+        const [wPlayer,] = player.getDimentions()
         // const opacity = player.getOpacity()
 
-
-        if (keys.ArrowLeft && player.position.x >= 0) {
-            player.update({ velocity: { x: -7 } })
+        // const [x,] = player.getPosition()
+        const x = 0
+        if (keys.ArrowLeft && x >= 0) {
+            player.UpdatePlayer({ velocity: { x: -7, y: 0 } })
             player.updateRotation(-0.20);
-        } else if (keys.ArrowRight && player.position.x <= canvas.width - wPlayer) {
-            player.update({ velocity: { x: 7 } })
+        } else if (keys.ArrowRight && x <= canvas!.width - wPlayer) {
+            player.UpdatePlayer({ velocity: { x: 7, y: 0 } })
             player.updateRotation(0.20);
         } else {
-            player.update({ velocity: { x: 0 } })
+            player.UpdatePlayer({ velocity: { x: 0, y: 0 } })
             player.updateRotation(0);
         };
 
@@ -283,7 +291,7 @@ export const startGame = (shipNum) => {
 
     addEventListener("keydown", ({ key }) => {
         const [x, y] = player.getPosition()
-        const [w, h] = player.getDimentions()
+        const [w,] = player.getDimentions()
         if (game.over) return
         switch (key) {
             case "a":
