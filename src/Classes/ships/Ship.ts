@@ -1,4 +1,4 @@
-import { SpaceValuesDimentions, SpaceValuesPosition } from "./types/SpaceValues";
+import { SpaceValuesDimentions, SpaceValuesPosition } from "../types/SpaceValues";
 
 const canvas = document.querySelector("canvas");
 
@@ -35,7 +35,7 @@ export default class Ship {
         };
     }
 
-    update({ velocity, opacity, dimentions }: { velocity?: SpaceValuesPosition, opacity?: number, dimentions?: SpaceValuesDimentions }) {
+    update({ velocity, opacity, dimentions }: { velocity?: SpaceValuesPosition, opacity?: number, dimentions?: SpaceValuesDimentions }): void {
         if (this.image) {
             this.velocity.x = velocity?.x ?? this.velocity.x
             this.velocity.y = velocity?.y ?? this.velocity.y
@@ -51,19 +51,19 @@ export default class Ship {
             this.height = dimentions?.h ?? this.height
         }
     }
-    getPosition() {
+    getPosition(): number[] {
         return [this.position.x, this.position.y]
     }
-    getDimentions() {
+    getDimentions(): number[] {
         return [this.width, this.height]
     }
-    getOpacity() {
+    getOpacity(): number {
         return this.opacity
     }
-    getImage() {
+    getImage(): HTMLImageElement {
         return this.image
     }
-    getColor() {
+    getColor(): string {
         return this.color
     }
 }

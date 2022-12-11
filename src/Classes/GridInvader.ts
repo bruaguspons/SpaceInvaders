@@ -1,4 +1,4 @@
-import Invader from './Invader'
+import Invader from './ships/Invader'
 import { SpaceValuesPosition } from './types/SpaceValues';
 const canvas = document.querySelector("canvas");
 // const c = canvas!.getContext("2d");

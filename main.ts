@@ -6,7 +6,6 @@ import ship3 from './src/img/ship3.png'
 import LeftArrow from './src/img/left-arrow.svg'
 import RightArrow from './src/img/right-arrow.svg'
 
-startGame(1)
 export const chooseShip = () => {
 
   document.querySelector('#app')!.innerHTML += `
@@ -49,7 +48,7 @@ export const chooseShip = () => {
     startGame(current)
   })
 }
-
+chooseShip()
 
 
 
