@@ -8,7 +8,7 @@ import RightArrow from './src/img/right-arrow.svg'
 
 export const chooseShip = () => {
 
-  document.querySelector('#app')!.innerHTML += `
+  document.querySelector<HTMLDivElement>('#app')!.innerHTML += `
       <div id='selector'>
         <h2>Select your ship:</h2>
         <div class='card'><img src=${ship1}></img></div>
@@ -21,8 +21,8 @@ export const chooseShip = () => {
   `
   let current = 0
   const ships = [ship1, ship2, ship3]
-  const ship = document.querySelector('.card')
-  const btns = document.querySelectorAll('#btn-sele>button')
+  const ship = document.querySelector<HTMLDivElement>('.card')
+  const btns = document.querySelectorAll<HTMLButtonElement>('#btn-sele>button')
 
   btns[0].addEventListener('click', () => {
     ship!.innerHTML = `<img class='shipOutRight' src=${ships[current]}></img>`

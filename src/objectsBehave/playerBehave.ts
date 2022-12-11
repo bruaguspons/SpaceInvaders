@@ -9,19 +9,16 @@ const canvas = document.querySelector("canvas");
 export const playerMoves = (player: Player, playerProjectiles: PlayerProjectile[], shipNum: number, over: boolean, keys: any) => {
     if (innerWidth < 500) {
         if (over) return
-        document.querySelector('#app')!.innerHTML += `
-        <div id='mobil'>
+        document.querySelector('#mobil')!.innerHTML += `
             <div>
                 <button><img src=${LeftArrow}></img></button>
                 <button><img src=${RightArrow}></img></button>
             </div>
             <button><img src=${Aim}></img></button>
-        </div>
         `
         if (innerWidth < 500) {
             const arrows = document.querySelectorAll('#mobil button')
             arrows[0].addEventListener('touchstart', () => {
-                console.log('gola')
                 keys.ArrowLeft = true;
             })
             arrows[0].addEventListener('touchend', () => {

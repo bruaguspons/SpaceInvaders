@@ -26,9 +26,18 @@ export const startGame = (shipNum: number) => {
     }
     const { player, playerProjectiles } = playerBehave(shipNum)
 
-    playerMoves(player, playerProjectiles, shipNum, game.over, keys)
 
     const particlesExplotions: ParticleExplotion[] = [];
+
+    // display score
+    let numScore = 0;
+    document.querySelector('#app')!.innerHTML += `
+    <div id="scoreBox">Score: <span id="score">${numScore}</span></div>
+    `
+    const score = document.querySelector('#score')
+    // display player controllers
+    playerMoves(player, playerProjectiles, shipNum, game.over, keys)
+
 
     let grids: Grid[] = [];
     let invaderProjectiles: InvaderProjectile[] = [];
@@ -37,12 +46,7 @@ export const startGame = (shipNum: number) => {
     let frames = 0;
     let randomNumber = Math.ceil(Math.random() * 500 + 400);
 
-    let numScore = 0;
-    document.querySelector('#app')!.innerHTML = `
-    <div id="scoreBox">Score: <span id="score">${numScore}</span></div>
-  `
-    const score = document.querySelector('#score')
-    // console.log(score.innerHTML)
+
 
 
     for (let i = 0; i < 100; i++) {
@@ -90,9 +94,7 @@ export const startGame = (shipNum: number) => {
         playerProjectiles.forEach((projectile, index) => {
             const [, y] = projectile.getPosition()
             if (y + projectile.getRadio() <= 0) {
-                setTimeout(() => {
-                    playerProjectiles.splice(index, 1)
-                }, 0)
+                playerProjectiles.splice(index, 1)
             } else {
                 projectile.updatePlayerProjectile();
             }
@@ -123,7 +125,9 @@ export const startGame = (shipNum: number) => {
                         grid.deleteInvader(index)
                         playerProjectiles.splice(i, 1)
                         numScore += 100;
+                        console.log(numScore)
                         score!.innerHTML = String(numScore)
+                        console.log(score)
                     }
                 })
             })
