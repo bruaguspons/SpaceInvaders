@@ -3,9 +3,13 @@ import Grid from './Classes/GridInvader';
 import StarParticle from './Classes/Particles/StarParticle';
 
 import InvaderProjectile from './Classes/Particles/InvaderProjectile';
-import { playerBehave, playerMoves, playerMoveZone } from './objectsBehave/playerBehave';
-import ParticleExplotion from './Classes/Particles/ParticleExplotion';
-import { invaderShoot, particlesExplotion } from './objectsBehave/InvaderBehave';
+
+
+import Ship from './Classes/ships/Ship';
+import playerMoves from './utils/playerMoves';
+import gameOver from './utils/gameOver';
+import Player from './Classes/ships/player';
+import PlayerProjectile from './Classes/Particles/PlayerProjectile';
 
 const canvas = document.querySelector("canvas");
 const c = canvas!.getContext("2d");
@@ -24,10 +28,8 @@ export const startGame = (shipNum: number) => {
         ArrowLeft: false,
         ArrowRight: false
     }
-    const { player, playerProjectiles } = playerBehave(shipNum)
-
-
-    const particlesExplotions: ParticleExplotion[] = [];
+    const player = new Player(shipNum);
+    const playerProjectiles: PlayerProjectile[] = [];
 
     // display score
     let numScore = 0;
@@ -42,28 +44,11 @@ export const startGame = (shipNum: number) => {
     let grids: Grid[] = [];
     let invaderProjectiles: InvaderProjectile[] = [];
 
-    const stars: StarParticle[] = []
+    const stars = new StarParticle()
     let frames = 0;
     let randomNumber = Math.ceil(Math.random() * 500 + 400);
 
-
-
-
-    for (let i = 0; i < 100; i++) {
-        stars.push(new StarParticle({
-            position: {
-                x: Math.random() * canvas!.width,
-                y: Math.random() * canvas!.height
-            },
-            velocity: {
-                x: 0,
-                y: 1
-            },
-            radio: Math.random() * 3,
-            color: "white",
-            fades: true
-        }))
-    }
+    const destoyShips: Ship[] = []
 
 
     function loop() {
@@ -72,24 +57,30 @@ export const startGame = (shipNum: number) => {
         requestAnimationFrame(loop);
         c!.fillStyle = "black";
         c!.fillRect(0, 0, canvas!.width, canvas!.height)
-
-        stars.forEach((star) => {
-            const [, y] = star.getPosition()
-            const r = star.getRadio()
-            if (y - r >= canvas!.height) {
-                star.updatePosition({ x: Math.random() * canvas!.width })
-                star.updatePosition({ y: 0 })
-            }
-            star.updateStar()
-        })
+        stars.updateStar()
 
 
         // player
-        playerMoveZone(player, keys)
+        player.playerMoveZone(keys)
         player.UpdatePlayer({});
 
-        particlesExplotion(particlesExplotions)
-        invaderShoot(invaderProjectiles, player, game, shipNum, numScore, particlesExplotions)
+        // particlesExplotion(particlesExplotions)
+        invaderProjectiles.forEach((invaderProjectile, index) => {
+            const { shoot, outScreen } = invaderProjectile.shootPlayer(player)
+            if (shoot || outScreen) {
+                invaderProjectiles.splice(index, 1)
+            } else {
+                invaderProjectile.updateInvaderProjectile();
+            }
+            if (shoot && !game.over) {
+                game.over = true
+                destoyShips.push(player)
+                setTimeout(() => {
+                    game.active = false
+                    gameOver(numScore, shipNum)
+                }, 2000)
+            }
+        })
 
         playerProjectiles.forEach((projectile, index) => {
             const [, y] = projectile.getPosition()
@@ -109,25 +100,16 @@ export const startGame = (shipNum: number) => {
 
             grid.getAllInvaders().forEach((invader, index) => {
                 invader.updateInvader({ velocity: grid.getVelocity() })
-                const [xInvader, yInvader] = invader.getPosition()
-                const [wInvader, hInvader] = invader.getDimentions()
-                playerProjectiles.forEach((projectile, i) => {
-                    const [x, y] = projectile.getPosition()
-                    const r = projectile.getRadio()
-                    if (
-                        y >= yInvader &&
-                        y + 2 * r <= yInvader + hInvader &&
-                        x >= xInvader &&
-                        x + 2 * r <= xInvader + wInvader
 
-                    ) {
-                        // createParticles(invader);
+                playerProjectiles.forEach((projectile, ind) => {
+                    const { shoot } = projectile.shootInvader(invader)
+
+                    if (shoot) {
+                        playerProjectiles.splice(ind, 1)
+                        destoyShips.push(invader)
                         grid.deleteInvader(index)
-                        playerProjectiles.splice(i, 1)
                         numScore += 100;
-                        console.log(numScore)
                         score!.innerHTML = String(numScore)
-                        console.log(score)
                     }
                 })
             })
@@ -138,6 +120,11 @@ export const startGame = (shipNum: number) => {
                 frames = randomNumber - 1
             }
         })
+
+        // destoy ships
+        for (const ind in destoyShips) {
+            if (destoyShips[Number(ind)].destroyship()) destoyShips.splice(Number(ind), 1)
+        }
 
 
         // spawning enemies

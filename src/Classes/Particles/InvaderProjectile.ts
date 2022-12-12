@@ -1,3 +1,4 @@
+import Player from "../ships/player";
 import { SpaceValuesPosition } from "../types/SpaceValues";
 import Particle from "./Particle";
 const canvas = document.querySelector("canvas");
@@ -29,5 +30,33 @@ export default class InvaderProjectile extends Particle {
     }
     getDimentions() {
         return [this.width, this.height]
+    }
+    shootPlayer(player: Player) {
+        const [xPlayer, yPlayer] = player.getPosition()
+        const [wPlayer, hPlayer] = player.getDimentions()
+        const [xProjectile, yProjectile] = this.getPosition()
+        const [wProjectile, hProjectile] = this.getDimentions()
+
+        if (yProjectile >= canvas!.height) {
+            return {
+                shoot: false,
+                outScreen: true
+            }
+        }
+        if (
+            yProjectile + hProjectile >= yPlayer &&
+            yProjectile <= yPlayer + hPlayer &&
+            xProjectile + (2 * wProjectile) >= xPlayer &&
+            xProjectile <= xPlayer + wPlayer
+        ) {
+            return {
+                shoot: true,
+                outScreen: false
+            }
+        }
+        return {
+            shoot: false,
+            outScreen: false
+        }
     }
 }

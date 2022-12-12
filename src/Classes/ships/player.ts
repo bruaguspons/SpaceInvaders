@@ -44,4 +44,19 @@ export default class Player extends Ship {
     updateRotation(rotation: number): void {
         this.rotation = rotation
     }
+    playerMoveZone(keys: { ArrowLeft: boolean, ArrowRight: boolean }) {
+        const [wPlayer,] = this.getDimentions()
+
+        const [x,] = this.getPosition()
+        if (keys.ArrowLeft && x >= 0) {
+            this.UpdatePlayer({ velocity: { x: -7, y: 0 } })
+            this.updateRotation(-0.20);
+        } else if (keys.ArrowRight && x <= canvas!.width - wPlayer) {
+            this.UpdatePlayer({ velocity: { x: 7, y: 0 } })
+            this.updateRotation(0.20);
+        } else {
+            this.UpdatePlayer({ velocity: { x: 0, y: 0 } })
+            this.updateRotation(0);
+        };
+    }
 }

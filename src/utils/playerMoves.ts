@@ -4,9 +4,7 @@ import Aim from './../img/aim.svg'
 import LeftArrow from './../img/left-arrow.svg'
 import RightArrow from './../img/right-arrow.svg'
 
-const canvas = document.querySelector("canvas");
-
-export const playerMoves = (player: Player, playerProjectiles: PlayerProjectile[], shipNum: number, over: boolean, keys: any) => {
+export default (player: Player, playerProjectiles: PlayerProjectile[], shipNum: number, over: boolean, keys: any) => {
     if (innerWidth < 500) {
         if (over) return
         document.querySelector('#mobil')!.innerHTML += `
@@ -92,35 +90,5 @@ export const playerMoves = (player: Player, playerProjectiles: PlayerProjectile[
                 break;
         }
     })
-
-}
-export const playerMoveZone = (player: Player, keys: any) => {
-    // const [xPlayer, yPlayer] = player.getPosition()
-    const [wPlayer,] = player.getDimentions()
-    // const opacity = player.getOpacity()
-
-    const [x,] = player.getPosition()
-    if (keys.ArrowLeft && x >= 0) {
-        player.UpdatePlayer({ velocity: { x: -7, y: 0 } })
-        player.updateRotation(-0.20);
-    } else if (keys.ArrowRight && x <= canvas!.width - wPlayer) {
-        player.UpdatePlayer({ velocity: { x: 7, y: 0 } })
-        player.updateRotation(0.20);
-    } else {
-        player.UpdatePlayer({ velocity: { x: 0, y: 0 } })
-        player.updateRotation(0);
-    };
-}
-
-export const playerBehave = (shipNum: number) => {
-    const player = new Player(shipNum);
-    const playerProjectiles: PlayerProjectile[] = [];
-
-    return {
-        player,
-        playerProjectiles
-    }
-
-
 
 }

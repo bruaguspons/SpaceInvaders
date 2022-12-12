@@ -1,8 +1,11 @@
+import ParticleExplotion from "../Particles/ParticleExplotion";
 import { SpaceValuesDimentions, SpaceValuesPosition } from "../types/SpaceValues";
 
 const canvas = document.querySelector("canvas");
 
 export default class Ship {
+    private particlesExplotions: ParticleExplotion[] = []
+    private destroid: boolean = false
     private color: string
     private velocity: SpaceValuesPosition
     private opacity: number
@@ -51,6 +54,7 @@ export default class Ship {
             this.height = dimentions?.h ?? this.height
         }
     }
+
     getPosition(): number[] {
         return [this.position.x, this.position.y]
     }
@@ -65,5 +69,40 @@ export default class Ship {
     }
     getColor(): string {
         return this.color
+    }
+    destroyship() {
+        if (this.particlesExplotions.length == 0 && !this.destroid) {
+            this.destroid = true
+            const [x, y] = this.getPosition()
+            const [w, h] = this.getDimentions()
+            for (let i = 0; i < 10; i++) {
+                this.particlesExplotions.push(new ParticleExplotion({
+                    position: {
+                        x: x + w / 2,
+                        y: y + h / 2
+                    },
+                    velocity: {
+                        x: (Math.random() - 0.5) * 2,
+                        y: (Math.random() - 0.5) * 2
+                    },
+                    radio: Math.random() * 3 + 3,
+                    color: this.getColor()
+
+                }))
+            }
+            this.opacity = 0
+            this.width = 0
+            this.height = 0
+            return false
+        } if (this.particlesExplotions.length > 0) {
+            this.particlesExplotions.forEach((particle, index) => {
+                if (particle.getOpacity() <= 0.01) {
+                    this.particlesExplotions.splice(index, 1)
+                } else { particle.updateExplotion(); }
+
+            });
+            return false
+        }
+        return true
     }
 }

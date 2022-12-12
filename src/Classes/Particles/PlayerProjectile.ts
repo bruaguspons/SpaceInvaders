@@ -1,3 +1,4 @@
+import Invader from "../ships/Invader";
 import { SpaceValuesPosition } from "../types/SpaceValues";
 import Particle from "./Particle";
 
@@ -21,5 +22,32 @@ export default class PlayerProjectile extends Particle {
     updatePlayerProjectile() {
         this.draw()
         super.update()
+    }
+    shootInvader(invader: Invader) {
+        const [xInvader, yInvader] = invader.getPosition()
+        const [wInvader, hInvader] = invader.getDimentions()
+        const [x, y] = this.getPosition()
+        const r = this.getRadio()
+        if (y + this.getRadio() <= 0) {
+            return {
+                shoot: false,
+                outScreen: true
+            }
+        }
+        if (
+            y >= yInvader &&
+            y + 2 * r <= yInvader + hInvader &&
+            x >= xInvader &&
+            x + 2 * r <= xInvader + wInvader
+        ) {
+            return {
+                shoot: true,
+                outScreen: false
+            }
+        }
+        return {
+            shoot: false,
+            outScreen: false
+        }
     }
 }
