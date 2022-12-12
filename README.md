@@ -16,3 +16,9 @@ To get the Node server running locally:
 - Clone this repo
 - `npm install` to install all required dependencies
 - `npm run dev` to start the local server
+
+## Application Structure
+
+- `main.ts` - The entry point to our application.
+- `src/StartGame.js` - This file starts our game useing OOP.
+- `src/Classes/` - This folder contains all our classes that we use to define our objects, like the player or invaders.
