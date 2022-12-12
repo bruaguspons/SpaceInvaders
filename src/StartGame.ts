@@ -28,8 +28,22 @@ export const startGame = (shipNum: number) => {
         ArrowLeft: false,
         ArrowRight: false
     }
+    // Player objects
     const player = new Player(shipNum);
     const playerProjectiles: PlayerProjectile[] = [];
+
+    // Invaders Objects
+    let grids: Grid[] = [];
+    let invaderProjectiles: InvaderProjectile[] = [];
+
+    // stars
+    const stars = new StarParticle()
+
+
+    let frames = 0;
+    let randomNumber = Math.ceil(Math.random() * 500 + 400);
+
+    const destoyShips: Ship[] = []
 
     // display score
     let numScore = 0;
@@ -37,18 +51,9 @@ export const startGame = (shipNum: number) => {
     <div id="scoreBox">Score: <span id="score">${numScore}</span></div>
     `
     const score = document.querySelector('#score')
+
     // display player controllers
     playerMoves(player, playerProjectiles, shipNum, game.over, keys)
-
-
-    let grids: Grid[] = [];
-    let invaderProjectiles: InvaderProjectile[] = [];
-
-    const stars = new StarParticle()
-    let frames = 0;
-    let randomNumber = Math.ceil(Math.random() * 500 + 400);
-
-    const destoyShips: Ship[] = []
 
 
     function loop() {
@@ -60,11 +65,11 @@ export const startGame = (shipNum: number) => {
         stars.updateStar()
 
 
-        // player
+        // player controllers
         player.playerMoveZone(keys)
         player.UpdatePlayer({});
 
-        // particlesExplotion(particlesExplotions)
+        // Invaders Shoots
         invaderProjectiles.forEach((invaderProjectile, index) => {
             const { shoot, outScreen } = invaderProjectile.shootPlayer(player)
             if (shoot || outScreen) {
@@ -81,7 +86,7 @@ export const startGame = (shipNum: number) => {
                 }, 2000)
             }
         })
-
+        // remove shoot if its out of the screen
         playerProjectiles.forEach((projectile, index) => {
             const [, y] = projectile.getPosition()
             if (y + projectile.getRadio() <= 0) {
@@ -91,6 +96,7 @@ export const startGame = (shipNum: number) => {
             }
         });
 
+        // player Shoots
         grids.forEach((grid, gridIndex) => {
             grid.update()
             const InvadersLength = grid.getLength()
