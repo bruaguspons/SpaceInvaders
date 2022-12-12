@@ -18,14 +18,14 @@ export default (numScore: number, shipNum: number) => {
     document.getElementById('ship')!.addEventListener('click', () => {
         document.querySelector('#GO')!.remove()
         document.querySelector('#scoreBox')!.remove()
-        if (innerWidth < 500) document.querySelector('#mobil')!.remove()
+        if (innerWidth < 500) document.querySelector('#mobil-controllers')!.remove()
         c!.clearRect(0, 0, canvas!.width, canvas!.height)
         chooseShip()
     })
     document.querySelector('#playAgain')!.addEventListener("click", () => {
         document.querySelector('#GO')!.remove()
         document.querySelector('#scoreBox')!.remove()
-        if (innerWidth < 500) document.querySelector('#mobil')!.remove()
+        if (innerWidth < 500) document.querySelector('#mobil-controllers')!.remove()
         c!.clearRect(0, 0, canvas!.width, canvas!.height)
         startGame(shipNum)
         // console.log("hola")

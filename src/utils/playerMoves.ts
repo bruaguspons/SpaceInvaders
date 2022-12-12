@@ -8,11 +8,13 @@ export default (player: Player, playerProjectiles: PlayerProjectile[], shipNum: 
     if (innerWidth < 500) {
         if (over) return
         document.querySelector('#mobil')!.innerHTML += `
+        <div id="mobil-controllers">
             <div>
                 <button><img src=${LeftArrow}></img></button>
                 <button><img src=${RightArrow}></img></button>
             </div>
             <button><img src=${Aim}></img></button>
+        </div>
         `
         if (innerWidth < 500) {
             const arrows = document.querySelectorAll('#mobil button')

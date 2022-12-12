@@ -59,4 +59,23 @@ export default class Player extends Ship {
             this.updateRotation(0);
         };
     }
+    // disableControllers(bool: boolean) {
+    //     const handleDisable = (e: any) => {
+    //         e.stopPropagation();
+    //         e.preventDefault();
+    //     }
+    //     if (bool) {
+
+    //         document.addEventListener('touchstart', handleDisable, true);
+    //         document.addEventListener('touchend', handleDisable, true);
+    //         document.addEventListener("keydown", handleDisable, true);
+    //         document.addEventListener("keyup", handleDisable, true);
+    //     } else {
+    //         document.removeEventListener('touchstart', handleDisable, true);
+    //         document.removeEventListener('touchend', handleDisable, true);
+    //         document.removeEventListener("keydown", handleDisable, true);
+    //         document.removeEventListener("keyup", handleDisable, true);
+    //     }
+
+    // }
 }
