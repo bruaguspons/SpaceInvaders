@@ -24,7 +24,7 @@
   background: transparent;
 }
 
-#mobil {
+#mobil-controllers {
   position: absolute;
   display: flex;
   justify-content: space-between;
@@ -37,27 +37,27 @@
 
 }
 
-#mobil button {
+#mobil-controllers button {
   outline: none;
   border: none;
   background-color: rgba(255, 255, 255, 0.296);
 }
 
-#mobil img {
+#mobil-controllers img {
   width: 40px;
   height: 40px;
   margin: 5px;
 }
 
-#mobil div button:nth-child(1) {
+#mobil-controllers div button:nth-child(1) {
   border-radius: 50% 0 0 50%;
 }
 
-#mobil div button:nth-child(2) {
+#mobil-controllers div button:nth-child(2) {
   border-radius: 0 50% 50% 0;
 }
 
-#mobil>button {
+#mobil-controllers>button {
   border-radius: 50%;
 }
 
