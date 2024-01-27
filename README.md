@@ -9,7 +9,7 @@ this app is based on this [Video](https://www.youtube.com/watch?v=MCVU0w73uKI)
 
 This repo is functionality complete — PRs and issues welcome!
 
-You can try out the game at: bruaguspons.github.io/SpaceInvaders/
+You can try out the game at: [Here](https://bruaguspons.github.io/SpaceInvaders/)
 
 # Getting started
 

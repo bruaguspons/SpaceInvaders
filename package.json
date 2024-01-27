@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deply": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "typescript": "5.3.3",
