@@ -9,6 +9,8 @@ this app is based on this [Video](https://www.youtube.com/watch?v=MCVU0w73uKI)
 
 This repo is functionality complete — PRs and issues welcome!
 
+You can try out the game at: bruaguspons.github.io/SpaceInvaders/
+
 # Getting started
 
 To get the Node server running locally:
